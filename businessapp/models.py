@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.conf import settings
 # Create your models here.
 
 class Category(models.Model):
@@ -16,6 +16,7 @@ class Category(models.Model):
 
 class Business(models.Model):
     id = models.AutoField(primary_key=True)
+    username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     seller = models.CharField(max_length=255)
     email = models.EmailField()

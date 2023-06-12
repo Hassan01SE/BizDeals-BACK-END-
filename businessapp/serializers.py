@@ -12,8 +12,9 @@ class CategorySerializer(serializers.ModelSerializer):
 class BusinessSerializer(serializers.ModelSerializer):
 
     category = serializers.StringRelatedField()
+    username = serializers.StringRelatedField()
 
     class Meta:
         model = Business
-        fields = ['id','title', 'category', 'location', 'price', 'revenue', 'expense', 'profit', 'description', 'seller', 'email', 'number','img1','img2']
+        fields = ['id','username','title', 'category', 'location', 'price', 'revenue', 'expense', 'profit', 'description', 'seller', 'email', 'number','img1','img2']
     
