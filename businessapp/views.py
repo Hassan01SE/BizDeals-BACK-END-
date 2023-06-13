@@ -23,6 +23,11 @@ class BusinessListView(generics.ListCreateAPIView):
     #permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
     def get_queryset(self):
+
+        username = self.request.query_params.get('username')
+        if username:
+             return Business.objects.filter(username__user_name__iexact=username).order_by('title')
+        
         category = self.request.query_params.get('category')
         if category in ['ecommerce', 'restaurant', 'digital']:
             return Business.objects.filter(category__type=category).order_by('title')
