@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Business, Category
 
-@admin.register(Business)
+""" @admin.register(Business)
 class BusinessAdmin(admin.ModelAdmin):
     list_display = ['id','username','title', 'seller','email','number', 'category', 'location', 'price', 'revenue','expense','profit','description','img1','img2']
     list_filter = ['category']
@@ -13,4 +13,7 @@ class BusinessAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['type']
     search_fields = ['type']
-    # Other customizations for the Category model in the admin site
+    # Other customizations for the Category model in the admin site """
+
+admin.site.register(Business)
+admin.site.register(Category)
