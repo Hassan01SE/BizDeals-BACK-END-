@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Business, Category
+from .models import Business, Category, Purchase
 
 """ @admin.register(Business)
 class BusinessAdmin(admin.ModelAdmin):
@@ -17,3 +17,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Business)
 admin.site.register(Category)
+admin.site.register(Purchase)

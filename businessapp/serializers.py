@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from .models import Business,Category
+from .models import Business,Category, Purchase
+
+
+class PurchaseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Purchase
+        fields = ['id','business','seller','price','business_price','firstname','lastname','username','email','introduction','number','token_paid']
 
 
 
