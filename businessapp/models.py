@@ -16,6 +16,11 @@ class Category(models.Model):
 
 
 class Business(models.Model):
+    STATUS_CHOICES = (
+        ('online', 'Online'),
+        ('offline', 'Offline'),
+    )
+
     id = models.AutoField(primary_key=True)
     username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -29,6 +34,7 @@ class Business(models.Model):
     expense = models.IntegerField()
     profit = models.IntegerField()
     description = models.TextField(max_length=2000)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     img1 = models.CharField(max_length=255)
     img2 = models.CharField(max_length=255)
 
@@ -47,5 +53,8 @@ class Purchase(models.Model):
     introduction = models.TextField(max_length=1000)
     number = models.IntegerField()
     token_paid = models.DecimalField( max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return self.business + ' being purchased by ' + self.username
 
 

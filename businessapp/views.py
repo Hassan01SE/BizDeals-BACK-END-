@@ -35,7 +35,7 @@ class BusinessListView(generics.ListCreateAPIView):
         category = self.request.query_params.get('category')
         if category in ['ecommerce', 'restaurant', 'digital']:
             return Business.objects.filter(category__type=category).order_by('title')
-        return Business.objects.all().order_by('title')
+        return Business.objects.filter(status='online').order_by('title')
     
    
     
