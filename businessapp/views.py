@@ -1,10 +1,16 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Business, Category
-from .serializers import CategorySerializer, BusinessSerializer
+from .models import Business, Category, Purchase
+from .serializers import CategorySerializer, BusinessSerializer, PurchaseSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissionsOrAnonReadOnly, SAFE_METHODS, BasePermission
+
+from rest_framework.exceptions import ValidationError
+
+from django.views.decorators.csrf import csrf_exempt
+import stripe
+
 
 # Create your views here.
 
@@ -39,6 +45,10 @@ class BusinessListView(generics.ListCreateAPIView):
     
    
     
+class PurchaseListView(generics.ListCreateAPIView):
+    queryset = Purchase.objects.all()
+    serializer_class = PurchaseSerializer
+
 
 
 
@@ -47,6 +57,34 @@ class BusinessDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Business.objects.all()
     serializer_class = BusinessSerializer
     lookup_field = 'pk'
+
+
+
+@csrf_exempt
+@api_view(['POST','GET'])
+def create_purchase(request):
+    serializer = PurchaseSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    try:
+        # Create a PaymentIntent with the provided amount
+        stripe.api_key = 'sk_test_51NIuP9AtptvsQ5QyjUcDooyq7GfSRXNtMJziNRks4na0RhZwvoOlZILlbah0J3XvcBw84QRX9F0sS1dehuxvihuB00pPf2IiJL'
+
+        amount = int(serializer.validated_data['token_paid'])  # Convert to cents
+        currency = 'pkr'
+
+        payment_intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency=currency,
+            payment_method_types=['card']
+        )
+
+        # Save the purchase with the payment details
+        purchase = serializer.save(payment_intent_id=payment_intent.id)
+
+        return Response({'purchase_id': purchase.id})
+    except stripe.error.StripeError as e:
+        raise ValidationError(str(e))
 
     
 

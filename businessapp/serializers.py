@@ -6,7 +6,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Purchase
-        fields = ['id','business','seller','price','business_price','firstname','lastname','username','email','introduction','number','token_paid']
+        fields = ['id', 'business', 'seller', 'businessprice', 'firstname', 'lastname', 'username', 'email', 'introduction', 'number', 'tokenpaid']
 
 
 

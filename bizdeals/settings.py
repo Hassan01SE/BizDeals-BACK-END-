@@ -72,6 +72,8 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = True 
 CORS_ALLOW_CREDENTIALS = True
 
+
+
 #custom user model
 
 AUTH_USER_MODEL = "userapp.NewUser"
