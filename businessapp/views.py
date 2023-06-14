@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Business
+from .models import Business, Category
 from .serializers import CategorySerializer, BusinessSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissionsOrAnonReadOnly, SAFE_METHODS, BasePermission
@@ -22,6 +22,10 @@ class BusinessListView(generics.ListCreateAPIView):
     serializer_class = BusinessSerializer
     #permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
+    def perform_create(self, serializer):
+        user = self.request.user  # Assuming you want to use the authenticated user
+        serializer.save(username=user)
+
     def get_queryset(self):
 
         username = self.request.query_params.get('username')
@@ -32,6 +36,8 @@ class BusinessListView(generics.ListCreateAPIView):
         if category in ['ecommerce', 'restaurant', 'digital']:
             return Business.objects.filter(category__type=category).order_by('title')
         return Business.objects.all().order_by('title')
+    
+   
     
 
 

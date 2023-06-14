@@ -76,6 +76,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = "userapp.NewUser"
 
+APPEND_SLASH = False
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
