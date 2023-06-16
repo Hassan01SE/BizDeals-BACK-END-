@@ -72,7 +72,7 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = True 
 CORS_ALLOW_CREDENTIALS = True
 
-
+STRIPE_SECRET_KEY = 'sk_test_51NIuP9AtptvsQ5QyjUcDooyq7GfSRXNtMJziNRks4na0RhZwvoOlZILlbah0J3XvcBw84QRX9F0sS1dehuxvihuB00pPf2IiJL'
 
 #custom user model
 
