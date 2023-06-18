@@ -89,6 +89,10 @@ class PurchaseListView(generics.ListCreateAPIView):
         checkout_session = self.create_checkout_session(price, product_name)
         if checkout_session:
             serializer.save() 
+            business = Business.objects.get(title=product_name)
+            business.status = 'offline'
+            business.save()
+            
             return Response({'checkout_url': checkout_session.url}, status=201)
         else:
             return Response({'error': 'Failed to create checkout session'}, status=500)
@@ -108,48 +112,7 @@ class BusinessDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-@csrf_exempt
-@api_view(['POST','GET'])
-def create_purchase(request):
-    serializer = PurchaseSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-
-    try:
-        # Create a PaymentIntent with the provided amount
-        stripe.api_key = 'sk_test_51NIuP9AtptvsQ5QyjUcDooyq7GfSRXNtMJziNRks4na0RhZwvoOlZILlbah0J3XvcBw84QRX9F0sS1dehuxvihuB00pPf2IiJL'
-
-        amount = int(serializer.validated_data['token_paid'])  # Convert to cents
-        currency = 'pkr'
-
-        payment_intent = stripe.PaymentIntent.create(
-            amount=amount,
-            currency=currency,
-            payment_method_types=['card']
-        )
-
-        # Save the purchase with the payment details
-        purchase = serializer.save(payment_intent_id=payment_intent.id)
-
-        return Response({'purchase_id': purchase.id})
-    except stripe.error.StripeError as e:
-        raise ValidationError(str(e))
 
     
 
 
-
-""" @api_view(['GET', 'POST'])
-def businessview(request):
-    category = request.GET.get('category', None)
-    if category in ['ecommerce', 'restaurant', 'digital']:
-        businesses = Business.objects.filter(category__type=category).order_by('title')
-    else:
-        businesses = Business.objects.all().order_by('title')
-    serializer = BusinessSerializer(businesses, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def businessdetailview(request, pk):
-    business = get_object_or_404(Business, pk=pk)
-    serializer = BusinessSerializer(business)
-    return Response(serializer.data) """
