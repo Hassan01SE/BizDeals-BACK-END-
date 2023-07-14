@@ -52,7 +52,7 @@
 <ol>
   <li>Clone the repository:</li>
 
-  <pre><code>git clone https://github.com/Hassan01SE/BizDeals-BACK-END-/</code></pre>
+  <pre><code>git clone https://github.com/Hassan01SE/BizDeals-BACK-END-.git</code></pre>
    <li>Create and activate a virtual environment (optional but recommended):</li>
 
   <pre><code>python -m venv env
